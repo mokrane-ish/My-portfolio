@@ -106,6 +106,7 @@ a {
 .navbar {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     background: rgba(13, 17, 23, 0.8); /* Semi-transparent */
     backdrop-filter: blur(10px); /* Frosted glass effect */
@@ -132,33 +133,41 @@ a {
 .nav-menu {
     list-style: none;
     position: fixed;
-    top: 70px;
-    left: 0;
-    width: 100%;
-    background: var(--bg-color);
-    flex-direction: column;
-    align-items: center;
+    top: 0;
+    /* Start off-screen to the right */
+    right: -100%; 
+    width: 70%; /* Take up 70% of the screen width */
+    max-width: 300px; /* But don't get wider than 300px */
+    height: 100vh; /* Full screen height */
+    background: var(--card-color); /* Use the slightly lighter card color */
     
-    /* Hide menu by default on mobile */
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align links to the left */
+    padding-top: 4rem;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    
+    /* This is the slide animation */
+    transition: right 0.4s ease-in-out;
 }
 
 /* This class is added by JavaScript */
 .nav-menu.is-active {
-    max-height: 500px; /* Show the menu */
+    right: 0; /* Slide it into view */
 }
 
 .nav-link {
     display: block;
-    padding: 1rem;
+    padding: 1rem 2rem;
     color: var(--heading-color);
-    transition: color 0.3s ease;
+    font-size: 1.1rem;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    width: 100%; /* Make links take full width for easier tapping */
 }
 
 .nav-link:hover {
     color: var(--primary-color);
+    background: rgba(0, 191, 255, 0.1); /* Subtle hover effect */
 }
 
 .nav-toggle {
@@ -169,6 +178,19 @@ a {
     cursor: pointer;
     display: block; /* Show on mobile */
 }
+
+/* Style for the close button */
+.nav-close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    color: var(--heading-color);
+    font-size: 1.8rem;
+    cursor: pointer;
+}
+
 
 /* ===== 5. Hero Section ===== */
 .hero {
@@ -192,7 +214,33 @@ a {
     margin-bottom: 2rem;
 }
 
-/* ===== 6. Skills Section ===== */
+/* ===== 6. About Me Section ===== */
+.about-content {
+    display: flex;
+    flex-direction: column; /* Stack image on top of text on mobile */
+    align-items: center;
+    gap: 2rem;
+}
+
+.about-image {
+    width: 200px;
+    height: 200px;
+    flex-shrink: 0;
+}
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%; /* Makes the image a circle */
+    border: 4px solid var(--primary-color);
+}
+
+.about-text {
+    flex-grow: 1;
+}
+
+/* ===== 7. Skills Section ===== */
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -208,7 +256,7 @@ a {
     font-weight: 500;
 }
 
-/* ===== 7. Projects Section ===== */
+/* ===== 8. Projects Section ===== */
 .projects-grid {
     display: grid;
     grid-template-columns: 1fr; /* Single column on mobile */
@@ -234,7 +282,7 @@ a {
     gap: 1rem;
 }
 
-/* ===== 8. Contact Section ===== */
+/* ===== 9. Contact Section ===== */
 #contact {
     text-align: center;
 }
@@ -254,7 +302,7 @@ a {
     color: var(--primary-color);
 }
 
-/* ===== 9. Footer ===== */
+/* ===== 10. Footer ===== */
 footer {
     text-align: center;
     padding: 2rem;
@@ -265,7 +313,7 @@ footer {
     margin-top: 4rem;
 }
 
-/* ===== 10. Scroll Animation ===== */
+/* ===== 11. Scroll Animation ===== */
 .fade-in {
     opacity: 0;
     transform: translateY(30px);
@@ -278,23 +326,34 @@ footer {
 }
 
 
-/* ===== 11. Media Query for Laptops (Responsive) ===== */
+/* ===== 12. Media Query for Laptops (Responsive) ===== */
 @media (min-width: 768px) {
     
-    .nav-toggle {
-        display: none; /* Hide hamburger on laptop */
+    .nav-toggle,
+    .nav-close {
+        display: none; /* Hide hamburger AND close button on laptop */
     }
 
     .nav-menu {
-        position: static;
+        position: static; /* Put menu back in the navbar */
         flex-direction: row;
-        max-height: none; /* Always show menu */
-        background: none;
+        height: auto; /* Reset height */
         width: auto;
+        max-width: none;
+        background: none;
+        box-shadow: none;
+        padding-top: 0;
     }
 
     .nav-link {
         padding: 0 1rem;
+        width: auto; /* Reset link width */
+        font-size: 1rem;
+    }
+    
+    .nav-link:hover {
+        color: var(--primary-color);
+        background: none; /* No background on desktop hover */
     }
 
     .hero-title {
@@ -305,7 +364,11 @@ footer {
         font-size: 1.5rem;
     }
 
-    /* Make projects a 2-column grid on larger screens */
+    .about-content {
+        flex-direction: row; /* Side-by-side layout */
+        text-align: left;
+    }
+
     .projects-grid {
         grid-template-columns: repeat(2, 1fr);
     }
