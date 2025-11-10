@@ -69,21 +69,24 @@ particlesJS("particles-js", {
 
 /* ===== 2. Mobile Navigation Toggle ===== */
 const navToggleBtn = document.getElementById('nav-toggle-btn');
+const navCloseBtn = document.getElementById('nav-close-btn');
 const navMenu = document.getElementById('nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
 
-// Function to toggle the menu
+// Function to OPEN the menu
 navToggleBtn.addEventListener('click', () => {
-    navMenu.classList.toggle('is-active');
+    navMenu.classList.add('is-active');
 });
 
-// Function to close the menu when a link is clicked
+// Function to CLOSE the menu
+function closeMenu() {
+    navMenu.classList.remove('is-active');
+}
+
+// Add close functionality to the 'X' button AND all the links
+navCloseBtn.addEventListener('click', closeMenu);
 navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        if (navMenu.classList.contains('is-active')) {
-            navMenu.classList.remove('is-active');
-        }
-    });
+    link.addEventListener('click', closeMenu);
 });
 
 
